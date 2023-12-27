@@ -1,0 +1,1 @@
+const useLoadSong = (song: Song) => {};
