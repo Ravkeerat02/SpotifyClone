@@ -7,12 +7,11 @@ import { getURL } from "@/libs/helpers";
 import { createOrRetrieveCustomer } from "@/libs/supabaseAdmin";
 
 export async function POST(request: Request) {
-  const { price, quantity = 1, metadata = {} } = await request.json();
-
   try {
     const supabase = createRouteHandlerClient({
       cookies,
     });
+
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -21,6 +20,8 @@ export async function POST(request: Request) {
       uuid: user?.id || "",
       email: user?.email || "",
     });
+
+    const { price, quantity = 1, metadata = {} } = await request.json();
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -35,16 +36,16 @@ export async function POST(request: Request) {
       mode: "subscription",
       allow_promotion_codes: true,
       subscription_data: {
-        trial_from_plan: true,
+        trial_period_days: 7, // Replace with your desired trial period
         metadata,
       },
       success_url: `${getURL()}/account`,
       cancel_url: `${getURL()}/`,
     });
 
-    return NextResponse.json({ sessionId: session.id });
-  } catch (err: any) {
-    console.log(err);
+    // return NextResponse.json({ sessionId: session.id });
+  } catch (err) {
+    console.error(err);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
