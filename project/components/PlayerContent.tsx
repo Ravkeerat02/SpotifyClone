@@ -1,15 +1,14 @@
 "use client";
-// packages
+
 import useSound from "use-sound";
-// icons
 import { useEffect, useState } from "react";
 import { BsPauseFill, BsPlayFill } from "react-icons/bs";
 import { HiSpeakerWave, HiSpeakerXMark } from "react-icons/hi2";
 import { AiFillStepBackward, AiFillStepForward } from "react-icons/ai";
-// data and hooks
+
 import { Song } from "@/types";
 import usePlayer from "@/hooks/usePlayer";
-// components
+
 import LikeButton from "./LikeButton";
 import MediaItem from "./MediaItem";
 import Slider from "./Slider";
@@ -26,7 +25,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 
   const Icon = isPlaying ? BsPauseFill : BsPlayFill;
   const VolumeIcon = volume === 0 ? HiSpeakerXMark : HiSpeakerWave;
-  // plays next song
+
   const onPlayNext = () => {
     if (player.ids.length === 0) {
       return;
@@ -41,7 +40,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 
     player.setId(nextSong);
   };
-  // plays previous song
+
   const onPlayPrevious = () => {
     if (player.ids.length === 0) {
       return;
